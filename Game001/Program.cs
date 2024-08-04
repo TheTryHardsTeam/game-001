@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 class FNAGame: Game {
   [STAThread]
@@ -20,6 +21,8 @@ class FNAGame: Game {
   private Texture2D texture;
 
   private SoundEffect sound;
+
+  private Song song;
 
   private FNAGame() {
     GraphicsDeviceManager graphicsDeviceManager = new GraphicsDeviceManager(this);
@@ -48,6 +51,8 @@ class FNAGame: Game {
 
         sound = Content.Load<SoundEffect>("jump");
 
+        song = Content.Load<Song>("soundtrack");
+
 
         // Load textures, sounds, and so on in here...
         base.LoadContent();
@@ -58,6 +63,7 @@ class FNAGame: Game {
         batch.Dispose();
         texture.Dispose();
         sound.Dispose();
+        song.Dispose();
 
         // Clean Up
         base.UnloadContent();
@@ -68,6 +74,11 @@ class FNAGame: Game {
         // Run Game logic here, don't render anything here
         KeyboardState keyboardCurrent = Keyboard.GetState();
         MouseState mouseCurrent = Mouse.GetState();
+
+        // Just repeat the song over and over
+        if (MediaPlayer.State == MediaState.Stopped) {
+          MediaPlayer.Play(song);
+        }
 
         if (keyboardCurrent.IsKeyDown(Keys.Space) && keyboardPrevious.IsKeyUp(Keys.Space)) {
           System.Console.WriteLine("Space bar was pressed!!");
