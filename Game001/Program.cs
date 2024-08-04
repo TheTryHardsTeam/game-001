@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 class FNAGame: Game {
@@ -14,6 +15,9 @@ class FNAGame: Game {
   private KeyboardState keyboardPrevious = new KeyboardState();
   private MouseState mousePrevious = new MouseState();
 
+  private SpriteBatch batch;
+  private Texture2D texture;
+
   private FNAGame() {
     GraphicsDeviceManager graphicsDeviceManager = new GraphicsDeviceManager(this);
 
@@ -21,6 +25,8 @@ class FNAGame: Game {
     graphicsDeviceManager.PreferredBackBufferHeight = 1080;
     graphicsDeviceManager.IsFullScreen = false;
     graphicsDeviceManager.SynchronizeWithVerticalRetrace = true;
+
+    Content.RootDirectory = "Content";
   }
 
     protected override void Initialize()
@@ -33,12 +39,20 @@ class FNAGame: Game {
 
     protected override void LoadContent()
     {
+        batch = new SpriteBatch(GraphicsDevice);
+
+        texture = Content.Load<Texture2D>("amadeus");
+
+
         // Load textures, sounds, and so on in here...
         base.LoadContent();
     }
 
     protected override void UnloadContent()
     {
+        batch.Dispose();
+        texture.Dispose();
+
         // Clean Up
         base.UnloadContent();
     }
@@ -67,6 +81,11 @@ class FNAGame: Game {
     {
         // Render stuff in here. Do NOT run game logic in here!
         GraphicsDevice.Clear(Color.CornflowerBlue);
+
+        batch.Begin();
+        batch.Draw(texture, Vector2.Zero, Color.White);
+        batch.End();
+
         base.Draw(gameTime);
     }
 }
