@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -17,6 +18,8 @@ class FNAGame: Game {
 
   private SpriteBatch batch;
   private Texture2D texture;
+
+  private SoundEffect sound;
 
   private FNAGame() {
     GraphicsDeviceManager graphicsDeviceManager = new GraphicsDeviceManager(this);
@@ -43,6 +46,8 @@ class FNAGame: Game {
 
         texture = Content.Load<Texture2D>("amadeus");
 
+        sound = Content.Load<SoundEffect>("jump");
+
 
         // Load textures, sounds, and so on in here...
         base.LoadContent();
@@ -52,6 +57,7 @@ class FNAGame: Game {
     {
         batch.Dispose();
         texture.Dispose();
+        sound.Dispose();
 
         // Clean Up
         base.UnloadContent();
@@ -65,6 +71,7 @@ class FNAGame: Game {
 
         if (keyboardCurrent.IsKeyDown(Keys.Space) && keyboardPrevious.IsKeyUp(Keys.Space)) {
           System.Console.WriteLine("Space bar was pressed!!");
+          sound.Play();
         }
 
         if (mouseCurrent.RightButton == ButtonState.Released && mousePrevious.RightButton == ButtonState.Pressed) {
