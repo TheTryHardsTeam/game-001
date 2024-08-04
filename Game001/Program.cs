@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 class FNAGame: Game {
   [STAThread]
@@ -10,11 +11,14 @@ class FNAGame: Game {
     }
   }
 
+  private KeyboardState keyboardPrevious = new KeyboardState();
+  private MouseState mousePrevious = new MouseState();
+
   private FNAGame() {
     GraphicsDeviceManager graphicsDeviceManager = new GraphicsDeviceManager(this);
 
-    graphicsDeviceManager.PreferredBackBufferWidth = 1280;
-    graphicsDeviceManager.PreferredBackBufferHeight = 720;
+    graphicsDeviceManager.PreferredBackBufferWidth = 1920;
+    graphicsDeviceManager.PreferredBackBufferHeight = 1080;
     graphicsDeviceManager.IsFullScreen = false;
     graphicsDeviceManager.SynchronizeWithVerticalRetrace = true;
   }
@@ -42,6 +46,20 @@ class FNAGame: Game {
     protected override void Update(GameTime gameTime)
     {
         // Run Game logic here, don't render anything here
+        KeyboardState keyboardCurrent = Keyboard.GetState();
+        MouseState mouseCurrent = Mouse.GetState();
+
+        if (keyboardCurrent.IsKeyDown(Keys.Space) && keyboardPrevious.IsKeyUp(Keys.Space)) {
+          System.Console.WriteLine("Space bar was pressed!!");
+        }
+
+        if (mouseCurrent.RightButton == ButtonState.Released && mousePrevious.RightButton == ButtonState.Pressed) {
+          System.Console.WriteLine("Right Mouse Button was released!");
+        }
+
+        keyboardPrevious = keyboardCurrent;
+        mousePrevious = mouseCurrent;
+
         base.Update(gameTime);
     }
 
